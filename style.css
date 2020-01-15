@@ -1,0 +1,99 @@
+html {
+    font-family: 'Source Code Pro', monospace;
+    background-color: seashell;
+    font-size: 16px;
+    user-select: none;
+}
+
+/* add media query global font-size 12px and make buttons .75 as big on mobile, should just about do it for scaling I think? */
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#calculator {
+    width: auto;
+    height: auto;
+    padding: 2rem;
+    background: #FE7777;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.2);
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#read-out {
+    background: #cdeb8e; /* Old browsers */
+    background: -moz-linear-gradient(top,  #cdeb8e 0%, #a5c956 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #cdeb8e 0%,#a5c956 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdeb8e', endColorstr='#a5c956',GradientType=0 ); /* IE6-9 */
+    flex-grow: 1;
+    width: auto;
+    height: 120px;
+    box-shadow: inset 0px 2px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    /* background: linear-gradient(180deg, #CDEB8E 0%, #A5C956 100%); */
+    align-self: stretch;
+    margin: 10px 10px 20px 10px;
+
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0px;
+
+    width: 440px;
+    height: auto;
+
+    margin: 5px 10px;
+}
+
+.row.last{
+    margin-bottom: 0;
+}
+
+.button {
+    width: 80px;
+    height: 80px;
+    margin: 10px 0px;
+
+    background: #F1F1F1;
+    border-radius: 10px;
+    box-shadow: 0px 3px 0px rgb(212, 212, 212);
+
+    text-align: center;
+    font-size: 3rem;
+    line-height: 5rem;
+    color: #4D4D4D;
+
+    transition: 50ms;
+
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: rgb(226, 226, 226);
+}
+
+.button:active {
+    transform: translateY(3px);
+    box-shadow: 0px 0px 0px #D9D9D9;
+}
+
+.button.last {
+    margin-right: 0;
+}
+
+.button.dbl {
+    width: 170px;
+}
+
