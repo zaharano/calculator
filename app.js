@@ -51,14 +51,24 @@ const calc = {
             return;
         }
 
-        // 
-        if (this.chainFlag && this.opSign && !this.opVal) {
+        // convoluted beyond necessity
+        // is chainFlag even necessary 
+        // (ways to check other data to determine chaining active)
+
+        //this one is about if the user is advancing a chained result to the op stage
+        // first statement had chainFlag check
+        if (this.opSign && !this.opVal) {
             this.opVal = this.currVal;
             this.currVal = '';
             this.chainFlag = false;
-        } else if (this.opSign && !this.opVal && !this.opSign && !this.chainFlag) {
-            this.opVal = this.currVal;
-            this.currVal = '';
+            // this one can't even happen right how haha, both t and f opSign
+        // } else if (this.opSign && !this.opVal && !this.opSign && !this.chainFlag) {
+        //     this.opVal = this.currVal;
+        //     this.currVal = '';
+            // this next thing is an problem, why did I do?
+
+            // this one is about: there's a result displayed in currVal, but the user doesn't want to chain it, just start a new thing
+            // last statement had chainFlag check
         } else if (!this.opSign && this.currVal) {
             this.currVal = '';
         }
@@ -67,9 +77,20 @@ const calc = {
         display.update();
     },
     setOp(newOp) {
-        if (!this.opSign) {
-            this.opSign = newOp;
-        }
+        // if there is no value, do nothing
+        // if (!this.currVal) {
+        //     return;
+        // }
+
+        // // if there is no opSign, set it
+        // if (!this.opSign) {
+        //     this.opSign = newOp;
+        // }
+
+        // if an op is pressed when there's no op value but a curr val
+        // 
+        // the opSign if updated
+
         if (!this.opVal && this.currVal) {
             this.opVal = this.currVal;
             this.currVal = '';
@@ -99,7 +120,9 @@ const display = {
         //console.log(`li .fa-${calc.opSign}`)
         let active = document.querySelector(`li .fa-${calc.opSign}`);
         //console.log(active)
-        active.classList.add('active');
+        if (active) {
+            active.classList.add('active');            
+        }
         //console.log(active)    
     },
     opClear() {
@@ -113,27 +136,26 @@ const display = {
 
 const controls = {
     init() {
-        let buttNumbs = document.querySelectorAll('.num')
-        for (let button of buttNumbs) {
+        let numButts = document.querySelectorAll('.num')
+        for (let button of numButts) {
             button.addEventListener('click', function() {
                 calc.addDigit(this.id)
             })
         }
 
-        let buttOps = document.querySelectorAll('.op')
-        for (let button of buttOps) {
+        let opButts = document.querySelectorAll('.op')
+        for (let button of opButts) {
             button.addEventListener('click', function() {
                 calc.setOp(this.id)
             })
         }
 
-        let buttEqual = document.querySelector('#equals')
-        buttEqual.addEventListener('click', () => calc.equals())
+        let equalButt = document.querySelector('#equals')
+        equalButt.addEventListener('click', () => calc.equals())
 
-        let buttClear = document.querySelector('#clear')
-        buttClear.addEventListener('click', () => calc.clear())
+        let clearButt = document.querySelector('#clear')
+        clearButt.addEventListener('click', () => calc.clear())
 
-        // c
         // neg
         // decimal
 
@@ -143,20 +165,8 @@ const controls = {
     },
     reset() {
         // decouples C then calls init()
-    }
+    },
 
 }
 
 controls.init()
-// const Button = function(value, stuff...) {
-//     this.value = value,
- //       this.button
-//      
-
-// }
-// for (button in buttons) {
-//    addEventListener that fires conrols[button.id]
-//     controls[button.id] = function(){
- //   calc[button.id]
-//}
-// }
