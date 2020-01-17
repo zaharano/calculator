@@ -17,8 +17,6 @@ Looks
 * different key colors for ops
 
 Bugs
-* digits of currVal as output isn't checked, incl float results from divide
-* pressing an op before any digits highlights the op, no other ops can be highlighted, then when you do press digit and then op the new op is also highlighted but the first one isn't (solve by disallowing highlighting without currVal?)
 * still haven't built the err handling - decouple controls except c and make c reinit controls
 
 Nice to adds

@@ -22,8 +22,10 @@ const calc = {
         } else return Number(this.opVal) / Number(this.currVal);
     },
     equals() {
-        if (this.opSign) {
-            this.currVal = calc[this.opSign]();
+        const { opSign } = this;
+        if (opSign) {
+            let rawResult = this[opSign]();
+            this.currVal = this.digitFix(rawResult);
             this.opSign = '';
             this.opVal = '';
             display.update();
@@ -39,69 +41,58 @@ const calc = {
         display.update();
         display.opClear();
     },
-    checkDigit() {
-
-    },
-    clearAndReset() {
-
+    digitFix(num) {
+        return Number(num.toPrecision(this.maxDigits-1))
     },
     addDigit(newDigit) {
         // if max digits is reached, stop accepting digits
-        if (this.currVal.length >= this.maxDigits) {
+        if (this.currVal.length >= this.maxDigits
+            || newDigit === '0' && this.currVal === '') {
             return;
         }
 
-        // convoluted beyond necessity
-        // is chainFlag even necessary 
-        // (ways to check other data to determine chaining active)
-
-        //this one is about if the user is advancing a chained result to the op stage
-        // first statement had chainFlag check
-        if (this.opSign && !this.opVal) {
-            this.opVal = this.currVal;
+        if (this.chainFlag) {
             this.currVal = '';
             this.chainFlag = false;
-            // this one can't even happen right how haha, both t and f opSign
-        // } else if (this.opSign && !this.opVal && !this.opSign && !this.chainFlag) {
-        //     this.opVal = this.currVal;
-        //     this.currVal = '';
-            // this next thing is an problem, why did I do?
-
-            // this one is about: there's a result displayed in currVal, but the user doesn't want to chain it, just start a new thing
-            // last statement had chainFlag check
-        } else if (!this.opSign && this.currVal) {
-            this.currVal = '';
         }
 
         this.currVal = this.currVal + newDigit;
         display.update();
     },
-    setOp(newOp) {
-        // if there is no value, do nothing
-        // if (!this.currVal) {
-        //     return;
-        // }
+    fireOp(newOp) {
+        const { opVal, currVal } = this;
 
-        // // if there is no opSign, set it
-        // if (!this.opSign) {
-        //     this.opSign = newOp;
-        // }
-
-        // if an op is pressed when there's no op value but a curr val
-        // 
-        // the opSign if updated
-
-        if (!this.opVal && this.currVal) {
-            this.opVal = this.currVal;
-            this.currVal = '';
-            this.opSign = newOp;
-            display.update();
-        } else if (this.currVal && this.opVal) {
+        // if neither exists, quit
+        if (!opVal && !currVal) {
+            return;
+        // if only opVal exists, reset op and quit
+        } else if (opVal && !currVal) {
+            this.setOp(newOp);
+            return;
+        // if both values already exist, equals 
+        } else if (currVal && opVal) {
             this.equals();
-            this.opSign = newOp;
         }
+
+        // advance to op stage
+        this.setOp(newOp);
+        this.opVal = this.currVal;
+        this.currVal = '';
+        display.update();
+    },
+    setOp(newOp) {
+        this.opSign = newOp;
         display.op();
-    }
+    },
+    addPoint() {
+        const { currVal } = this;
+        if (!currVal)
+            this.currVal = '0.';
+        else if (currVal.includes('.'))
+            return
+        else 
+            this.currVal = currVal + '.';
+    },
 
 }
 
@@ -113,10 +104,11 @@ const display = {
     update() {
         let mainDisplay = document.querySelector('#main')
         let subDisplay = document.querySelector('#sub')
-        mainDisplay.textContent = calc.currVal;
+        mainDisplay.textContent = calc.currVal ? calc.currVal : '0';
         subDisplay.textContent = calc.opVal;
     },
     op() {
+        this.opClear();
         //console.log(`li .fa-${calc.opSign}`)
         let active = document.querySelector(`li .fa-${calc.opSign}`);
         //console.log(active)
@@ -146,7 +138,7 @@ const controls = {
         let opButts = document.querySelectorAll('.op')
         for (let button of opButts) {
             button.addEventListener('click', function() {
-                calc.setOp(this.id)
+                calc.fireOp(this.id)
             })
         }
 
@@ -156,6 +148,7 @@ const controls = {
         let clearButt = document.querySelector('#clear')
         clearButt.addEventListener('click', () => calc.clear())
 
+        
         // neg
         // decimal
 
@@ -169,4 +162,5 @@ const controls = {
 
 }
 
+display.update()
 controls.init()

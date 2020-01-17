@@ -71,7 +71,7 @@ li .active {
 #vals {
     flex-grow: 1;
     font-size: 3.4rem;
-    opacity: 0.7;
+    opacity: 0.6;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -121,6 +121,8 @@ li .active {
     transition: 50ms;
 
     cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .button.op, #equals {
