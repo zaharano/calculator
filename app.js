@@ -6,7 +6,6 @@ const calc = {
     chainFlag: false,
 
     plus() {
-
         return Number(this.opVal) + Number(this.currVal);
     },
     minus() {
@@ -45,12 +44,17 @@ const calc = {
         return Number(num.toPrecision(this.maxDigits-1))
     },
     addDigit(newDigit) {
-        // if max digits is reached, stop accepting digits
+        // if max digits is reached 
+        // or if value is zero and zero is entered
+        // do nothing
         if (this.currVal.length >= this.maxDigits
             || newDigit === '0' && this.currVal === '') {
             return;
         }
 
+        // handle case - currVal exists as output, but
+        // no new command is set to chain, so new digit input
+        // should just clear output start logging freshinput
         if (this.chainFlag) {
             this.currVal = '';
             this.chainFlag = false;
@@ -69,7 +73,7 @@ const calc = {
         } else if (opVal && !currVal) {
             this.setOp(newOp);
             return;
-        // if both values already exist, equals 
+        // if both values already exist, equals then...
         } else if (currVal && opVal) {
             this.equals();
         }
@@ -86,21 +90,23 @@ const calc = {
     },
     addPoint() {
         const { currVal } = this;
-        if (!currVal)
+        // if no value exists, start with decimal
+        if (!currVal || this.chainFlag) {
+            this.chainFlag = false;
             this.currVal = '0.';
+        }
+        // disallow second .
         else if (currVal.includes('.'))
             return
+        // base case of just adding a . to value string
         else 
             this.currVal = currVal + '.';
+        display.update();
     },
 
 }
 
 const display = {
-    // init() {
-    //     let mainDisplay = document.querySelector('#main')
-    //     let subDisplay = document.querySelector('#sub')
-    // },
     update() {
         let mainDisplay = document.querySelector('#main')
         let subDisplay = document.querySelector('#sub')
@@ -108,14 +114,11 @@ const display = {
         subDisplay.textContent = calc.opVal;
     },
     op() {
-        this.opClear();
-        //console.log(`li .fa-${calc.opSign}`)
+        display.opClear();
         let active = document.querySelector(`li .fa-${calc.opSign}`);
-        //console.log(active)
         if (active) {
             active.classList.add('active');            
         }
-        //console.log(active)    
     },
     opClear() {
         let deactivate = document.querySelector(`.active`);
@@ -123,7 +126,6 @@ const display = {
             deactivate.classList.remove('active');
         }
     }
-
 }
 
 const controls = {
@@ -148,11 +150,18 @@ const controls = {
         let clearButt = document.querySelector('#clear')
         clearButt.addEventListener('click', () => calc.clear())
 
-        
-        // neg
-        // decimal
+        let pointButt = document.querySelector('#point')
+        pointButt.addEventListener('click', () => calc.addPoint())
 
+        // window.addEventListener('keypress', function(e) {
+        //     controls.keyHandler(e.keyCode);
+        // })
     },
+    // keyHandler(code) {
+    //     switch (e) {
+    //         case  :
+    //     }
+    // },
     decouple() {
     // stops listeners, changes C listener to call reset()
     },
