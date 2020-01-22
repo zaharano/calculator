@@ -118,15 +118,20 @@ const display = {
         mainDisplay.textContent = mainVal ? mainVal : '0';
         subDisplay.textContent = subVal;
     },
-    // fixes values with large numbers of digits for display
+    // rounds values with large numbers of digits for display
+    // does not actually round the values in calc!
     digitFix(num) {
+        // if num is not over max, return it
         if (num.length < this.maxDigits)
             return num;
-        // if (num > this.maxVal || num < this.minVal) {
-        //     controls.decouple();
-        //     return 'err - out of scope';
-        // }
-        return Number(num).toPrecision(this.maxDigits-5) + '';
+        // in cases of exponentiated results, 
+        // must reduce precision in order to fit display
+        else if (num >= (10 ** this.maxDigits) ||
+                 num < 1 / (10 ** this.maxDigits)) {
+            return Number(num).toPrecision(this.maxDigits-5) + '';
+        }
+        // round other results to maxDigit precision
+        return Number(num).toPrecision(this.maxDigits) + '';
     },
     op() {
         display.opClear();
