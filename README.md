@@ -8,8 +8,11 @@ todos:
 * maybe implement testing package?
 
 Bugs
-* err handling - decouple controls except c and make c reinit controls - at the moment just for div by zero but also should handle too large or too neg numbers.
-* display of long results - employ digitFix on results within equals func
+* err handling - display error output - decouple controls except c and make c reinit controls.
+* divide by zero handling broken by digitFix implement
+* display of decimals is off - the maxDigits - 5 thing for exponentiation is mucking it up
+    * how do I handle all that that, since it could be 0.123456789 or 12340.56789 or 12345678.99
+* need to handle actual out of bound situations (outside js int handling)
 
 Nice to adds
 * copy to clipboard button on currVal when hovered

@@ -70,7 +70,7 @@ li .active {
 
 #vals {
     flex-grow: 1;
-    font-size: 3.4rem;
+    font-size: 3rem;
     opacity: 0.6;
     display: flex;
     justify-content: space-between;
@@ -78,7 +78,7 @@ li .active {
 }
 
 #sub {
-    font-size: 2.5rem;
+    font-size: 2rem;
     min-height: 2.8rem;
 }
 

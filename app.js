@@ -2,7 +2,6 @@ const calc = {
     currVal: '',
     opVal: '',
     opSign: '',
-    maxDigits: 10,
     chainFlag: false,
 
     plus() {
@@ -23,8 +22,7 @@ const calc = {
     equals() {
         const { opSign } = this;
         if (opSign) {
-            let rawResult = this[opSign]();
-            this.currVal = this.digitFix(rawResult);
+            this.currVal = this[opSign]();
             this.opSign = '';
             this.opVal = '';
             display.update();
@@ -40,21 +38,17 @@ const calc = {
         display.update();
         display.opClear();
     },
-    digitFix(num) {
-        return Number(num.toPrecision(this.maxDigits-1))
-    },
     addDigit(newDigit) {
         // if max digits is reached 
         // or if value is zero and zero is entered
         // do nothing
-        if (this.currVal.length >= this.maxDigits
-            || newDigit === '0' && this.currVal === '') {
+        if (newDigit === '0' && this.currVal === '') {
             return;
         }
 
         // handle case - currVal exists as output, but
         // no new command is set to chain, so new digit input
-        // should just clear output start logging freshinput
+        // should just clear output start logging fresh input
         if (this.chainFlag) {
             this.currVal = '';
             this.chainFlag = false;
@@ -90,7 +84,9 @@ const calc = {
     },
     addPoint() {
         const { currVal } = this;
-        // if no value exists, start with decimal
+        // if no current value exists
+        // OR current value exists but chaining
+        // start with 0.
         if (!currVal || this.chainFlag) {
             this.chainFlag = false;
             this.currVal = '0.';
@@ -107,11 +103,30 @@ const calc = {
 }
 
 const display = {
+    // display limits
+    // calc handles and maintains values offscreen outside these stricts
+    maxDigits: 10,
+    maxVal: -9.9999e+99,
+    minVal: 9.9999e+99,
+
     update() {
+        let mainVal = this.digitFix(calc.currVal)
+        let subVal = this.digitFix(calc.opVal)
+
         let mainDisplay = document.querySelector('#main')
         let subDisplay = document.querySelector('#sub')
-        mainDisplay.textContent = calc.currVal ? calc.currVal : '0';
-        subDisplay.textContent = calc.opVal;
+        mainDisplay.textContent = mainVal ? mainVal : '0';
+        subDisplay.textContent = subVal;
+    },
+    // fixes values with large numbers of digits for display
+    digitFix(num) {
+        if (num.length < this.maxDigits)
+            return num;
+        // if (num > this.maxVal || num < this.minVal) {
+        //     controls.decouple();
+        //     return 'err - out of scope';
+        // }
+        return Number(num).toPrecision(this.maxDigits-5) + '';
     },
     op() {
         display.opClear();
