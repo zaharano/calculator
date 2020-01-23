@@ -1,5 +1,6 @@
 # Calc Dat
 [Live](https://zaharano.github.io/calculator/)
+
 It's a calculator. It does what it says on the tin.
 
 I'm proud of how I (eventually) figured out that it's best to just abstract the display away from the real values going on under the hood - this way you can accurately calculate numbers with lots of digits while not trying to figure out how to show various amounts of exponentiation and decimals. Storing the values as strings for the purpose of mutation, but casting them to numbers for operating and rounding seems a good system. 
