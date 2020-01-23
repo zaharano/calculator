@@ -5,19 +5,18 @@ const calc = {
     chainFlag: false,
 
     plus() {
-        return Number(this.opVal) + Number(this.currVal);
+        return String(Number(this.opVal) + Number(this.currVal));
     },
     minus() {
-        return Number(this.opVal) - Number(this.currVal);
+        return String(Number(this.opVal) - Number(this.currVal));
     },
     times() {
-        return Number(this.opVal) * Number(this.currVal);
+        return String(Number(this.opVal) * Number(this.currVal));
     },
     divide() {
         if (Number(this.currVal) === 0) {
-            controls.decouple();
-            return 'err - div by 0';
-        } else return Number(this.opVal) / Number(this.currVal);
+            return 'bananas';
+        } else return String(Number(this.opVal) / Number(this.currVal));
     },
     equals() {
         const { opSign } = this;
@@ -28,6 +27,12 @@ const calc = {
             display.update();
             display.opClear();
             this.chainFlag = true;
+
+            // error reset
+            if (this.currVal === 'bananas') {
+                this.currVal = '';
+                // this.chainFlag = false;
+            }
         }
     },
     clear() {
@@ -39,21 +44,15 @@ const calc = {
         display.opClear();
     },
     addDigit(newDigit) {
-        // if max digits is reached 
-        // or if value is zero and zero is entered
-        // do nothing
+        // stops leading zeroes
         if (newDigit === '0' && this.currVal === '') {
             return;
         }
-
-        // handle case - currVal exists as output, but
-        // no new command is set to chain, so new digit input
-        // should just clear output start logging fresh input
+        // clears currVal if it exists as a result
         if (this.chainFlag) {
             this.currVal = '';
             this.chainFlag = false;
         }
-
         this.currVal = this.currVal + newDigit;
         display.update();
     },
@@ -68,10 +67,9 @@ const calc = {
             this.setOp(newOp);
             return;
         // if both values already exist, equals then...
-        } else if (currVal && opVal) {
+        } else if (opVal && currVal) {
             this.equals();
-        }
-
+        } // if only currVal exists, then...
         // advance to op stage
         this.setOp(newOp);
         this.opVal = this.currVal;
@@ -82,30 +80,40 @@ const calc = {
         this.opSign = newOp;
         display.op();
     },
-    addPoint() {
+    point() {
         const { currVal } = this;
         // if no current value exists
-        // OR current value exists but chaining
-        // start with 0.
+        // OR current value exists as a result
+        // start with '0.'
         if (!currVal || this.chainFlag) {
             this.chainFlag = false;
             this.currVal = '0.';
         }
         // disallow second .
-        else if (currVal.includes('.'))
+        else if (currVal.includes('.')) {
             return
+        }
         // base case of just adding a . to value string
-        else 
+        else {
             this.currVal = currVal + '.';
+        }
         display.update();
     },
+    neg() {
+        // avoids weird crap, may re-add ability to neg these
+        if (!this.currVal || this.chainFlag) {
+            return;
+        }
+        this.currVal = String(this.currVal * -1);
+        display.update();
+    }
 
 }
 
 const display = {
     // display limits
     // calc handles and maintains values offscreen outside these stricts
-    maxDigits: 10,
+    maxDigits: 11,
     maxVal: -9.9999e+99,
     minVal: 9.9999e+99,
 
@@ -116,22 +124,23 @@ const display = {
         let mainDisplay = document.querySelector('#main')
         let subDisplay = document.querySelector('#sub')
         mainDisplay.textContent = mainVal ? mainVal : '0';
-        subDisplay.textContent = subVal;
+        subDisplay.textContent = subVal ? subVal : '';
     },
     // rounds values with large numbers of digits for display
     // does not actually round the values in calc!
-    digitFix(num) {
+    digitFix(numString) {
         // if num is not over max, return it
-        if (num.length < this.maxDigits)
-            return num;
-        // in cases of exponentiated results, 
-        // must reduce precision in order to fit display
-        else if (num >= (10 ** this.maxDigits) ||
-                 num < 1 / (10 ** this.maxDigits)) {
-            return Number(num).toPrecision(this.maxDigits-5) + '';
+        if (numString.length < this.maxDigits) {
+            return numString;
         }
-        // round other results to maxDigit precision
-        return Number(num).toPrecision(this.maxDigits) + '';
+        // removes precision in display too accomodate extra chars
+        // like from -, ., or exponentiation
+        let realDigits = this.maxDigits;
+        while (String(Number(numString).toPrecision(realDigits)).length > this.maxDigits)
+        {
+            realDigits--;
+        }
+        return String(Number(numString).toPrecision(realDigits));
     },
     op() {
         display.opClear();
@@ -164,15 +173,13 @@ const controls = {
             })
         }
 
-        let equalButt = document.querySelector('#equals')
-        equalButt.addEventListener('click', () => calc.equals())
-
-        let clearButt = document.querySelector('#clear')
-        clearButt.addEventListener('click', () => calc.clear())
-
-        let pointButt = document.querySelector('#point')
-        pointButt.addEventListener('click', () => calc.addPoint())
-
+        let otherButts = document.querySelectorAll('.other')
+        for (let button of otherButts) {
+            button.addEventListener('click', function() {
+                calc[`${this.id}`]()
+            })
+        }
+        
         // window.addEventListener('keypress', function(e) {
         //     controls.keyHandler(e.keyCode);
         // })
@@ -182,12 +189,6 @@ const controls = {
     //         case  :
     //     }
     // },
-    decouple() {
-    // stops listeners, changes C listener to call reset()
-    },
-    reset() {
-        // decouples C then calls init()
-    },
 
 }
 

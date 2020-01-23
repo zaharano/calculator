@@ -1,15 +1,16 @@
 Part of The Odin Project curriculum
 
 ### Todos:
-* [ ] Add +/- key : * -1 I think?
-* [ ] Add keypress event listeners : simple enough
+* [x] Add +/- key : * -1 I think?
 * [ ] Add backspace : slice length - 1
-* [ ] err handling - display error output - decouple controls except c and make c reinit controls.
-* [ ] need to handle actual out of bound situations (outside js int handling)
-* [ ] divide by zero handling broken by digitFix implement
+* [ ] Add keypress event listeners : simple enough
+* [x] err handling - display error output - decouple controls except c and make c reinit controls.
+* [x] need to handle actual out of bound situations (outside js int handling)
+* [x] fix up the digit fix for display (adapt to e, -, .)
 
 ### Bugs
-
+* [ ] Calc vals *are* being rounded when I don't think they should be
+* [ ] unhandled annoying floating point in JS issues. ex. 3.3 * 3 = 9.899999.. 
 
 ### Nice to adds
 * [ ] copy to clipboard button on currVal when hovered

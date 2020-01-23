@@ -54,9 +54,10 @@ body {
 ul {
     margin: 0;
     list-style: none;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     text-align: center;
     opacity: .5;
+    padding-inline-start: 10px;
 }
 
 li {
@@ -70,7 +71,7 @@ li .active {
 
 #vals {
     flex-grow: 1;
-    font-size: 3rem;
+    font-size: 3.5rem;
     opacity: 0.6;
     display: flex;
     justify-content: space-between;
