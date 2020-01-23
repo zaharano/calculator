@@ -5,8 +5,6 @@ html {
     user-select: none;
 }
 
-/* add media query global font-size 12px and make buttons .75 as big on mobile, should just about do it for mobile I think? */
-
 body {
     margin: 0;
     display: flex;
@@ -27,7 +25,7 @@ body {
     border-radius: 2rem;
     display: flex;
     flex-direction: column;
-    min-height: 600px;
+    min-height: 500px;
     margin-top: 20px;
 }
 
@@ -99,7 +97,7 @@ li .active {
     width: 440px;
     height: auto;
 
-    margin: 5px 10px;
+    margin: 0px 10px;
 }
 
 .row.last{
@@ -110,19 +108,15 @@ li .active {
     width: 80px;
     height: 80px;
     margin: 10px 0px;
-
     background: #F1F1F1;
     border-radius: 10px;
     box-shadow: 0px 3px 0px rgb(212, 212, 212);
-
     text-align: center;
     font-size: 3rem;
     font-weight: 900;
     line-height: 5rem;
     color: #4D4D4D;
-
     transition: 50ms;
-
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
@@ -154,3 +148,29 @@ li .active {
     width: 170px;
 }
 
+@media only screen and (max-width: 768px) {
+    html {
+        font-size: 12px;
+    }
+
+    .row {
+        width: auto;
+    }
+    .button {
+        width: 60px;
+        height: 60px;
+        margin: 5px 5px;
+    }
+    .button.dbl {
+        width: 130px;
+    }
+
+
+    #calculator {
+        min-height: 300px;
+    }
+
+    #read-out {
+        height: auto;
+    }
+}
