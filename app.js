@@ -22,26 +22,24 @@ const calc = {
         const { opSign } = this;
         if (opSign) {
             this.currVal = this[opSign]();
-            this.opSign = '';
-            this.opVal = '';
-            display.update();
-            display.opClear();
+            this.endOp();
             this.chainFlag = true;
-
             // error reset
             if (this.currVal === 'bananas') {
                 this.currVal = '';
-                // this.chainFlag = false;
             }
         }
     },
-    clear() {
-        this.currVal = '';
+    endOp() {
         this.opVal = '';
         this.opSign = '';
-        this.chainFlag = false;
         display.update();
         display.opClear();
+    },
+    clear() {
+        this.currVal = '';
+        this.endOp();
+        this.chainFlag = false;
     },
     addDigit(newDigit) {
         // stops leading zeroes
@@ -93,7 +91,7 @@ const calc = {
         else if (currVal.includes('.')) {
             return
         }
-        // base case of just adding a . to value string
+        // base case of adding a . to value string
         else {
             this.currVal = currVal + '.';
         }
@@ -120,15 +118,14 @@ const calc = {
 }
 
 const display = {
-    // display limits
-    // calc handles and maintains values offscreen outside these stricts
+    // limit on value display
+    // calc handles and maintains values offscreen outside this limits
     maxDigits: 11,
-    maxVal: -9.9999e+99,
-    minVal: 9.9999e+99,
     
     update() {
         let mainVal = this.digitFix(calc.currVal)
         let subVal = this.digitFix(calc.opVal)
+        // display 0 for #main if value is empty
         document.querySelector('#main').textContent = mainVal ? mainVal : '0';
         document.querySelector('#sub').textContent = subVal ? subVal : '';
     },
@@ -139,7 +136,7 @@ const display = {
         if (numString.length < this.maxDigits) {
             return numString;
         }
-        // removes precision in display too accomodate extra chars
+        // removes precision in display to accomodate extra chars
         // like from -, ., or exponentiation
         let realDigits = this.maxDigits;
         while (String(Number(numString).toPrecision(realDigits)).length > this.maxDigits)
@@ -173,7 +170,9 @@ const controls = {
         'Backspace': 'delete',
         'Enter': 'equals',
         'n': 'neg',
+        'N': 'neg',
         'c': 'clear',
+        'C': 'clear',
         '0': '0',
         '1': '1',
         '2': '2',
@@ -201,7 +200,7 @@ const controls = {
         let otherButts = document.querySelectorAll('.other')
         for (let button of otherButts) {
             button.addEventListener('click', function() {
-                calc[`${this.id}`]()
+                calc[this.id]()
             })
         }
         window.addEventListener('keypress', e => {
