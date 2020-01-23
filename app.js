@@ -100,11 +100,20 @@ const calc = {
         display.update();
     },
     neg() {
+        const { currVal } = this;
         // avoids weird crap, may re-add ability to neg these
-        if (!this.currVal || this.chainFlag) {
+        if (!currVal || this.chainFlag) {
             return;
         }
-        this.currVal = String(this.currVal * -1);
+        this.currVal = String(currVal * -1);
+        display.update();
+    },
+    delete() {
+        const { currVal } = this;
+        if (!currVal || this.chainFlag) {
+            return;
+        }
+        this.currVal = currVal.slice(0,currVal.length-1);
         display.update();
     }
 
