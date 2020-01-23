@@ -151,7 +151,10 @@ li .active {
 @media only screen and (max-width: 600px) {
     html {
         font-size: 12px;
-        background-color: black;
+    }
+
+    body {
+        min-height: 460px;
     }
 
     .row {
@@ -166,12 +169,13 @@ li .active {
         width: 130px;
     }
 
-
     #calculator {
         min-height: 300px;
+        padding: .5rem;
     }
 
     #read-out {
         height: auto;
     }
+    
 }
