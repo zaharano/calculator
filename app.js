@@ -125,15 +125,12 @@ const display = {
     maxDigits: 11,
     maxVal: -9.9999e+99,
     minVal: 9.9999e+99,
-
+    
     update() {
         let mainVal = this.digitFix(calc.currVal)
         let subVal = this.digitFix(calc.opVal)
-
-        let mainDisplay = document.querySelector('#main')
-        let subDisplay = document.querySelector('#sub')
-        mainDisplay.textContent = mainVal ? mainVal : '0';
-        subDisplay.textContent = subVal ? subVal : '';
+        document.querySelector('#main').textContent = mainVal ? mainVal : '0';
+        document.querySelector('#sub').textContent = subVal ? subVal : '';
     },
     // rounds values with large numbers of digits for display
     // does not actually round the values in calc!
@@ -167,6 +164,27 @@ const display = {
 }
 
 const controls = {
+    keymap: {
+        '+': 'plus',  
+        '-': 'minus',  
+        '*': 'times',  
+        '/': 'divide',
+        '.': 'point',  
+        'Backspace': 'delete',
+        'Enter': 'equals',
+        'n': 'neg',
+        'c': 'clear',
+        '0': '0',
+        '1': '1',
+        '2': '2',
+        '3': '3',
+        '4': '4',
+        '5': '5',
+        '6': '6',
+        '7': '7',
+        '8': '8',
+        '9': '9',
+    },
     init() {
         let numButts = document.querySelectorAll('.num')
         for (let button of numButts) {
@@ -174,31 +192,23 @@ const controls = {
                 calc.addDigit(this.id)
             })
         }
-
         let opButts = document.querySelectorAll('.op')
         for (let button of opButts) {
             button.addEventListener('click', function() {
                 calc.fireOp(this.id)
             })
         }
-
         let otherButts = document.querySelectorAll('.other')
         for (let button of otherButts) {
             button.addEventListener('click', function() {
                 calc[`${this.id}`]()
             })
         }
-        
-        // window.addEventListener('keypress', function(e) {
-        //     controls.keyHandler(e.keyCode);
-        // })
+        window.addEventListener('keypress', e => {
+            let sel = document.getElementById(controls.keymap[e.key]);
+            if (sel) sel.click();
+        })
     },
-    // keyHandler(code) {
-    //     switch (e) {
-    //         case  :
-    //     }
-    // },
-
 }
 
 display.update()

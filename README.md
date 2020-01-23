@@ -2,8 +2,8 @@ Part of The Odin Project curriculum
 
 ### Todos:
 * [x] Add +/- key : * -1 I think?
-* [ ] Add backspace : slice length - 1
-* [ ] Add keypress event listeners : simple enough
+* [x] Add backspace : slice length - 1
+* [x] Add keypress event listeners : simple enough
 * [x] err handling - display error output - decouple controls except c and make c reinit controls.
 * [x] need to handle actual out of bound situations (outside js int handling)
 * [x] fix up the digit fix for display (adapt to e, -, .)
