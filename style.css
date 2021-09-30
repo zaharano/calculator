@@ -100,6 +100,11 @@ li .active {
   align-self: flex-end;
 }
 
+#face-container {
+  max-width: 330px;
+  margin: 10px auto;
+}
+
 .row {
   display: flex;
   flex-direction: row;
