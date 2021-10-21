@@ -5,6 +5,18 @@ html {
   user-select: none;
 }
 
+button,
+input[type='submit'],
+input[type='reset'] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
 body {
   margin: 0;
   display: flex;
@@ -19,8 +31,13 @@ body {
   width: auto;
   height: auto;
   padding: 2rem;
-  box-shadow: 0px 15px 0px rgb(173, 78, 78);
-  background: #fe7777;
+  box-shadow: 0px 15px 0px hsla(42, 99%, 48%, 1);
+  background: linear-gradient(
+    180deg,
+    hsl(42, 99%, 60%) 0%,
+    hsla(42, 93%, 64%, 1) 100%
+  );
+
   /* box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.2); */
   border-radius: 2rem;
   display: flex;
@@ -50,7 +67,8 @@ body {
   flex-grow: 1;
   width: auto;
   height: 105px;
-  box-shadow: inset 0px 2px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0px 2px 10px rgba(0, 0, 0, 0.25),
+    0px -3px 0px 3px hsla(42, 99%, 48%, 1);
   border-radius: 10px;
   margin-bottom: 20px;
   /* background: linear-gradient(180deg, #CDEB8E 0%, #A5C956 100%); */
@@ -117,7 +135,7 @@ li .active {
   margin: 0px 10px;
 }
 
-.row.last {
+.row:last-of-type {
   margin-bottom: 0;
 }
 
@@ -141,8 +159,8 @@ li .active {
 
 .button.op,
 #equals {
-  background-color: aquamarine;
-  box-shadow: 0px 3px 0px rgb(96, 207, 170);
+  background-color: hsl(200, 70%, 75%);
+  box-shadow: 0px 3px 0px hsl(200, 60%, 70%);
 }
 
 .button:hover {
@@ -151,7 +169,7 @@ li .active {
 
 .button.op:hover,
 #equals:hover {
-  background-color: rgb(103, 223, 183);
+  background-color: hsl(200, 65%, 73%);
 }
 
 .button:active {
@@ -159,7 +177,7 @@ li .active {
   box-shadow: 0px 0px 0px #d9d9d9;
 }
 
-.button.last {
+.button:last-of-type {
   margin-right: 0;
 }
 
